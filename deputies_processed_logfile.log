@@ -1,0 +1,50 @@
+2024-04-04 18:32:14,591 - INFO - Original shape: (5000, 19)
+2024-04-04 18:32:14,639 - INFO - Data information: None
+2024-04-04 18:32:14,708 - INFO - New data information after changing datatypes: None
+2024-04-04 18:32:14,731 - INFO - Training set (X): (4000, 18)
+2024-04-04 18:32:14,731 - INFO - Testing set (X): (303, 18)
+2024-04-04 18:32:14,731 - INFO - Training set (y): (4000,)
+2024-04-04 18:32:14,731 - INFO - Testing set (y): (303,)
+2024-04-04 18:32:19,018 - INFO - EDA Completed, URL: http://Neha_Rajpoot_99:40000
+2024-04-04 18:32:19,096 - INFO - Result: {'object': ['deputy_name', 'deputy_state', 'political_party', 'refund_description', 'company_name', 'company_id', 'party_pg', 'party_en', 'party_ideology1', 'party_ideology2', 'party_ideology3', 'party_ideology4'], 'numerical': ['Unnamed: 0', 'refund_value', 'party_tse', 'party_nmembers'], 'datetime': ['refund_date', 'party_regdate']}
+2024-04-04 18:32:19,100 - INFO - Null Columns: {'object': ['deputy_state', 'political_party', 'party_pg', 'party_en', 'party_ideology1', 'party_ideology2', 'party_ideology3', 'party_ideology4'], 'numerical': ['party_tse', 'party_nmembers']}
+2024-04-04 18:32:19,109 - INFO - Numerical Null values imputation done with Median
+2024-04-04 18:32:19,150 - INFO - Categorical Null values imputation done
+2024-04-04 18:32:19,181 - INFO - Outlier Imputation done with Winsorizer
+2024-04-04 18:32:20,708 - INFO - Categorical Encoding done
+2024-04-04 18:32:20,771 - INFO - Cyclical Encoding done using party_regdate column
+2024-04-04 18:32:20,783 - INFO - Normalization done
+2024-04-04 18:32:20,785 - INFO - Training set (X): (3984, 191)
+2024-04-04 18:32:20,785 - INFO - Testing set (X): (303, 191)
+2024-04-04 18:32:20,785 - INFO - Training set (y): (3984, 1)
+2024-04-04 18:32:20,785 - INFO - Testing set (y): (303, 1)
+2024-04-04 18:32:44,123 - INFO - Preprocessing Done!!!
+2024-04-04 18:32:45,696 - ERROR - Exception occurred while processing request: Can only use .str accessor with string values!
+Traceback (most recent call last):
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\dtale\views.py", line 119, in _handle_exceptions
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\dtale\views.py", line 3135, in get_column_analysis
+    return jsonify(**analysis.build())
+                     ^^^^^^^^^^^^^^^^
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\dtale\column_analysis.py", line 141, in build
+    return_data, code = self.analysis.build(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\dtale\column_analysis.py", line 457, in build
+    hist = self.build_hist(s, code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\dtale\column_analysis.py", line 511, in build_hist
+    pd.value_counts(s.str.split(expand=True).stack())
+                    ^^^^^
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\pandas\core\generic.py", line 6296, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\pandas\core\accessor.py", line 224, in __get__
+    accessor_obj = self._accessor(obj)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\pandas\core\strings\accessor.py", line 191, in __init__
+    self._inferred_dtype = self._validate(data)
+                           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rajpo\PycharmProjects\Tecnokrat\API-for-Data-Standarization\venv\Lib\site-packages\pandas\core\strings\accessor.py", line 245, in _validate
+    raise AttributeError("Can only use .str accessor with string values!")
+AttributeError: Can only use .str accessor with string values!
