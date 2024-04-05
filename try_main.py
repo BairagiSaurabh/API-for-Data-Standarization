@@ -71,7 +71,7 @@ class Data_Preprocess():
         X = df.drop(columns=[target_column]) 
         y = df[target_column] 
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=test_size, random_state=42)
         xy_test = pd.concat([X_test,y_test],axis=1)
         xy_test.dropna(inplace=True)
         X_test = xy_test.drop(columns=[target_column]) 
