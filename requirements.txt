@@ -1,0 +1,6 @@
+steamlit
+pandas
+logging
+feature_engine
+dtale
+scikit-learn
