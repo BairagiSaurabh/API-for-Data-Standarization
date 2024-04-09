@@ -99,21 +99,26 @@ class Data_Preprocess():
         X = df.drop(columns=[target_column]) 
         y = df[target_column] 
 
-        if len(y.unique()) < threshold:
+        try:
             X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=test_size, random_state=42)
             xy_test = pd.concat([X_test,y_test],axis=1)
             xy_test.dropna(inplace=True)
             X_test = xy_test.drop(columns=[target_column]) 
             y_test = xy_test[target_column]
-            return X_train, X_test, y_train, y_test
+            print("This is a Classification problem")
+            return X_train, X_test, y_train, y_test,False
     
-        else:
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
-            xy_test = pd.concat([X_test,y_test],axis=1)
-            xy_test.dropna(inplace=True)
-            X_test = xy_test.drop(columns=[target_column]) 
-            y_test = xy_test[target_column]
-            return X_train, X_test, y_train, y_test
+        except ValueError as e:
+            if "The least populated class in y has only 1 member" in str(e):
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+                xy_test = pd.concat([X_test,y_test],axis=1)
+                xy_test.dropna(inplace=True)
+                X_test = xy_test.drop(columns=[target_column]) 
+                y_test = xy_test[target_column]
+                print("This is a Regression problem")
+                return X_train, X_test, y_train, y_test,True
+            else:
+                print("Another ValueError occurred...")
 
     def low_variance_features(self, X_train, X_test, variables=None, threshold=0.80):
         x_train = X_train.copy() 
@@ -339,8 +344,8 @@ class Data_Preprocess():
                 print("The dataset is timseries data. Preprocessing not available right now.")
         else:
             # Split the Data
-            target_column = str(input("Enter the target column: "))
-            X_train, X_test, y_train, y_test = self.split_data(nan_dropped, target_column, test_size=0.2)
+            target_column = str(input("Enter the target column: ")).strip()
+            X_train, X_test, y_train, y_test,is_regression = self.split_data(nan_dropped, target_column, test_size=0.2)
             self.logger.info("Training set (X): {}".format(X_train.shape))
             self.logger.info("Testing set (X): {}".format(X_test.shape))
             self.logger.info("Training set (y): {}".format(y_train.shape))
@@ -423,7 +428,10 @@ class Data_Preprocess():
                 self.logger.info("Normalization done")
 
             # Label encoding Target variable
-            y_train_encoded, y_test_encoded = self.encode_target_variable(y_train, y_test)
+            if is_regression == False:
+                y_train_encoded, y_test_encoded = self.encode_target_variable(y_train, y_test)
+            else:
+                 y_train_encoded, y_test_encoded = y_train, y_test
 
             self.logger.info("Training set (X): {}".format(X_train.shape))
             self.logger.info("Testing set (X): {}".format(X_test.shape))
@@ -440,10 +448,4 @@ class Data_Preprocess():
                 y_test_encoded.to_excel(writer, sheet_name='y_test', index=False)
 
             self.logger.info("Preprocessing Done!!!")
-            print("Preprocessing Done!!!")
-
-# if __name__ == "__main__":
-#     df = pd.read_csv("dirty_deputies_v2.csv", na_values='Nan')
-#     name = input("Enter the name for preprocessing: ")
-#     processor = Data_Preprocess(df, name)
-#     processor.run()
+            print("Preprocessing Done!!! ")
